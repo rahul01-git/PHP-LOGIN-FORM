@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +22,16 @@
         echo "</pre>";
         $email =  $_POST['email'];
         $pass = $_POST['pass'];
-        echo "$email, $pass";
+        
+        
+        //database create garni yeta batw!!  (MySQLI)
+        $conn = new mysqli("localhost","root","","login_auth");  //localhost ,username,password,databaseName
+
+        if($conn->connect_error){
+            die("$conn->Connect_error");
+        }
+
+        echo "success";
     }
 
 ?>
