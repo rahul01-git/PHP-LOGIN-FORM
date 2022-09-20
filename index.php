@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 </head>
 <body>
-    <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post" >
+    <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post" class="p-3">
         <input type="email" class="form-control w-25 mt-1" name="email" id="email" placeholder="Enter your email"> <br>
         <input type="password" class="form-control w-25" name="pass" id="pass" placeholder="Enter your password"> <br>
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -19,6 +19,7 @@
 
 <?php
     if($_SERVER["REQUEST_METHOD"] === 'POST'){
+        session_start();
         // echo "<pre>";
         // print_r($_POST);
         // echo "</pre>";
@@ -33,7 +34,7 @@
             die("$conn->Connect_error");
         }
 
-        echo "connection success<br>"; //if success
+        // echo "connection success<br>"; //if success
 
         $sql = "SELECT * FROM user WHERE email='$email' and password='$pass' ";
         $result = $conn ->query($sql);
@@ -44,13 +45,15 @@
         if($result -> num_rows>0){
             $row = $result -> fetch_assoc();
             $db_email = $row['email'];
+            $name = $row['name'];
             $db_pass = $row['password'];
             // print_r($row);
             // echo "$db_email,$db_pass";
             if($db_email === $email &&  $db_pass === $pass){
-                echo "login success";
+                $_SESSION['user'] = $name;
+                header('Location:welcome.php');
             }else{
-                echo "invalid email or password";
+                echo "invalid id or password";
             }
         }
     }
